@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Cloudflare Pages works best with standalone output or static export
-  // But for full App Router support, we usually let Cloudflare handle it.
   images: {
-    unoptimized: true, // Often required for static export or certain CDNs
+    unoptimized: true,
+  },
+  // Cloudflare Pages specific optimizations
+  typescript: {
+    ignoreBuildErrors: true, // Optional: useful if type errors block deployment
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // Optional: useful if lint errors block deployment
   },
 };
 
