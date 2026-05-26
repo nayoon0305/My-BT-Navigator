@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { symptomsData } from "@/lib/symptoms";
-import { ChevronLeft, Info, CheckCircle2, AlertTriangle, MessageSquare } from "lucide-react";
+import { ChevronLeft, Info, CheckCircle2, AlertTriangle, MessageSquare, Play, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export async function generateMetadata({ params }) {
@@ -9,7 +9,7 @@ export async function generateMetadata({ params }) {
   if (!symptom) return {};
 
   return {
-    title: `${symptom.title} | BT Navigator`,
+    title: `${symptom.title} | BT 네비게이터`,
     description: symptom.description,
     openGraph: {
       title: symptom.title,
@@ -46,134 +46,199 @@ export default async function SymptomPage({ params }) {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white min-h-screen font-noto">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       
-      {/* Mobile Back Button */}
-      <div className="max-w-screen-xl mx-auto px-4 py-4 md:py-8">
+      {/* Breadcrumbs / Back */}
+      <div className="max-w-screen-xl mx-auto px-4 py-6">
         <Link href="/" className="inline-flex items-center text-clinic-600 font-medium hover:underline">
-          <ChevronLeft className="w-4 h-4 mr-1" /> Back to Home
+          <ChevronLeft className="w-4 h-4 mr-1" /> 홈으로 돌아가기
         </Link>
       </div>
 
       {/* Hero Section */}
-      <section className="bg-clinic-50/50 py-12 md:py-20 border-y border-clinic-100">
-        <div className="max-w-screen-xl mx-auto px-4">
+      <section className="bg-clinic-50/30 py-16 md:py-24 border-y border-clinic-100/50 overflow-hidden relative">
+        <div className="max-w-screen-xl mx-auto px-4 relative z-10">
           <div className="max-w-3xl">
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">{symptom.title}</h1>
-            <p className="text-lg md:text-xl text-gray-600 leading-relaxed">{symptom.description}</p>
+            <div className="inline-block px-3 py-1 bg-clinic-100 text-clinic-700 text-xs font-bold rounded-full mb-6 tracking-wider uppercase">Symptom Guide</div>
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">{symptom.title}</h1>
+            <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl">{symptom.description}</p>
           </div>
         </div>
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-clinic-200/20 rounded-full blur-3xl" />
       </section>
 
-      <div className="max-w-screen-xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div className="lg:col-span-2 space-y-16">
+      <div className="max-w-screen-xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
+        <div className="lg:col-span-2 space-y-20">
           
-          {/* Risk Summary */}
+          {/* Quick Risk Summary Card */}
           <section>
-            <div className="flex items-center space-x-2 mb-6">
-              <AlertTriangle className="text-amber-500 w-6 h-6" />
-              <h2 className="text-2xl font-bold">Quick Risk Summary</h2>
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold">의료진 요약 가이드</h2>
             </div>
-            <div className="bg-amber-50 border border-amber-100 p-6 rounded-2xl">
-              <div className="flex items-center mb-4">
-                <span className="text-sm font-bold uppercase tracking-wider text-amber-700 mr-2">Risk Level:</span>
-                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+            <div className="bg-white border-2 border-amber-50 p-8 rounded-3xl shadow-sm">
+              <div className="flex items-center mb-6">
+                <span className="text-sm font-bold text-gray-400 mr-4">위험도 수준</span>
+                <span className={`px-4 py-1 rounded-full text-xs font-bold ${
                   symptom.riskLevel === 'Low' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                 }`}>
-                  {symptom.riskLevel}
+                  {symptom.riskLevel === 'Low' ? '낮음' : '보통'}
                 </span>
               </div>
-              <p className="text-gray-700 leading-relaxed">{symptom.riskSummary}</p>
+              <p className="text-gray-700 text-lg leading-relaxed mb-6 font-medium">{symptom.riskSummary}</p>
+              <div className="p-4 bg-gray-50 rounded-xl border border-gray-100 text-sm text-gray-600 leading-relaxed italic">
+                &quot;{symptom.doctorNote}&quot;
+              </div>
             </div>
           </section>
 
-          {/* Symptom Checker UI */}
+          {/* Interactive Symptom Checker UI Placeholder */}
           <section>
-            <div className="flex items-center space-x-2 mb-6">
-              <CheckCircle2 className="text-clinic-600 w-6 h-6" />
-              <h2 className="text-2xl font-bold">Self-Check Guide</h2>
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-10 h-10 bg-clinic-100 rounded-xl flex items-center justify-center text-clinic-600">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold">자가 증상 체크리스트</h2>
             </div>
             <div className="space-y-4">
               {symptom.checkerQuestions.map((q, i) => (
-                <div key={i} className="flex items-start p-4 bg-gray-50 rounded-xl border border-gray-100">
-                  <div className="w-6 h-6 bg-white border-2 border-clinic-200 rounded-full flex-shrink-0 mt-0.5 mr-4" />
-                  <p className="text-gray-700 font-medium">{q}</p>
-                </div>
+                <label key={i} className="flex items-start p-6 bg-white border border-gray-100 rounded-2xl cursor-pointer hover:border-clinic-200 hover:bg-clinic-50/20 transition-all group">
+                  <input type="checkbox" className="mt-1.5 w-5 h-5 rounded-md border-gray-300 text-clinic-600 focus:ring-clinic-500 mr-4" />
+                  <span className="text-gray-800 font-medium group-hover:text-clinic-700">{q}</span>
+                </label>
               ))}
             </div>
-            <p className="mt-6 text-sm text-gray-500 italic">
-              * This is for informational purposes only and does not replace professional medical advice.
-            </p>
           </section>
 
-          {/* Test Explanation */}
+          {/* Doctor Explanation Video Section */}
           <section>
-            <div className="flex items-center space-x-2 mb-6">
-              <Info className="text-clinic-600 w-6 h-6" />
-              <h2 className="text-2xl font-bold">Recommended Tests</h2>
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600">
+                <Play className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold">전문의 영상 설명</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="aspect-video bg-gray-900 rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer">
+              {/* YouTube Embed Placeholder */}
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${symptom.videoId}`}
+                title="Doctor Explanation"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </section>
+
+          {/* Test Explanation Section */}
+          <section>
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-10 h-10 bg-clinic-100 rounded-xl flex items-center justify-center text-clinic-600">
+                <Info className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold">추천 정밀 검사</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {symptom.tests.map((test, i) => (
-                <div key={i} className="p-6 border border-gray-100 rounded-2xl bg-white shadow-sm">
-                  <h3 className="text-lg font-bold mb-2 text-clinic-700">{test.name}</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">{test.description}</p>
+                <div key={i} className="p-8 border border-gray-100 rounded-3xl bg-white hover:shadow-lg transition-shadow">
+                  <h3 className="text-xl font-bold mb-4 text-clinic-700">{test.name}</h3>
+                  <p className="text-gray-600 leading-relaxed">{test.description}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* FAQ */}
+          {/* FAQ Section */}
           <section>
-            <div className="flex items-center space-x-2 mb-6">
-              <MessageSquare className="text-clinic-600 w-6 h-6" />
-              <h2 className="text-2xl font-bold">Frequently Asked Questions</h2>
+            <div className="flex items-center space-x-3 mb-8">
+              <div className="w-10 h-10 bg-clinic-100 rounded-xl flex items-center justify-center text-clinic-600">
+                <MessageSquare className="w-6 h-6" />
+              </div>
+              <h2 className="text-2xl font-bold">자주 묻는 질문</h2>
             </div>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {symptom.faqs.map((faq, i) => (
-                <div key={i} className="border-b border-gray-100 pb-6">
-                  <h3 className="text-lg font-bold mb-3 text-gray-900">Q: {faq.q}</h3>
-                  <p className="text-gray-600 leading-relaxed">A: {faq.a}</p>
-                </div>
+                <details key={i} className="group border border-gray-100 rounded-2xl bg-white overflow-hidden" open={i === 0}>
+                  <summary className="flex items-center justify-between p-6 cursor-pointer font-bold text-lg hover:bg-gray-50 transition-colors list-none">
+                    <span className="flex-1 pr-4">Q. {faq.q}</span>
+                    <span className="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center group-open:rotate-180 transition-transform">
+                      <ChevronLeft className="w-4 h-4 -rotate-90" />
+                    </span>
+                  </summary>
+                  <div className="p-6 pt-0 text-gray-600 leading-relaxed border-t border-gray-50">
+                    A. {faq.a}
+                  </div>
+                </details>
               ))}
+            </div>
+          </section>
+
+          {/* Related Symptoms */}
+          <section className="pt-10 border-t border-gray-100">
+            <h2 className="text-xl font-bold mb-8 text-gray-400">연관된 증상 가이드</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {symptom.relatedSymptoms.map((relSlug) => {
+                const rel = symptomsData[relSlug];
+                if (!rel) return null;
+                return (
+                  <Link key={relSlug} href={`/symptoms/${relSlug}`} className="flex items-center justify-between p-6 bg-gray-50 rounded-2xl hover:bg-clinic-50 transition-colors group">
+                    <span className="font-bold text-gray-700 group-hover:text-clinic-700">{rel.title}</span>
+                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-clinic-600" />
+                  </Link>
+                );
+              })}
             </div>
           </section>
         </div>
 
-        {/* Sidebar / Doctor Section & CTA */}
+        {/* Sticky Reservation CTA Sidebar */}
         <div className="space-y-8">
-          <div className="bg-clinic-900 text-white p-8 rounded-3xl sticky top-24">
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="w-16 h-16 bg-clinic-100 rounded-full overflow-hidden flex-shrink-0 border-2 border-white/20">
-                {/* Placeholder for doctor image */}
-                <div className="w-full h-full bg-clinic-600 flex items-center justify-center text-white text-2xl font-bold">
-                  Dr
+          <div className="bg-clinic-900 text-white p-10 rounded-[2.5rem] sticky top-24 shadow-2xl shadow-clinic-900/20 overflow-hidden">
+            <div className="relative z-10">
+              <h3 className="text-2xl font-bold mb-2">상담 예약하기</h3>
+              <p className="text-clinic-300 text-sm mb-10 leading-relaxed">
+                전문적인 유방·갑상선 검진으로<br />걱정을 덜어드립니다.
+              </p>
+              
+              <div className="space-y-4">
+                <button 
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && window.gtag) {
+                      window.gtag('event', 'click_reservation', {
+                        'event_category': 'engagement',
+                        'event_label': symptom.title
+                      });
+                    }
+                    alert('예약 페이지로 이동합니다.');
+                  }}
+                  className="w-full bg-white text-clinic-900 font-bold py-5 rounded-2xl hover:bg-clinic-50 transition-all active:scale-[0.98] shadow-lg shadow-white/5"
+                >
+                  간편 온라인 예약
+                </button>
+                <a href="tel:02-123-4567" className="w-full bg-clinic-800 text-white font-bold py-5 rounded-2xl flex items-center justify-center hover:bg-clinic-700 transition-all">
+                  전화 문의하기
+                </a>
+              </div>
+              
+              <div className="mt-10 pt-10 border-t border-white/10">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-clinic-700 rounded-full flex items-center justify-center text-xl font-bold">P</div>
+                  <div>
+                    <div className="font-bold text-sm">박지수 대표원장</div>
+                    <div className="text-xs text-clinic-400">유방·갑상선 분과 전문의</div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <h3 className="font-bold text-lg">Dr. Park Ji-soo</h3>
-                <p className="text-clinic-200 text-sm">Breast & Thyroid Specialist</p>
-              </div>
             </div>
-            <p className="text-clinic-100 text-sm leading-relaxed mb-8">
-              &quot;Understanding your symptoms is the first step to peace of mind. I recommend prompt screening for any persistent changes in breast or thyroid tissue.&quot;
-            </p>
-            <hr className="border-white/10 mb-8" />
-            <h4 className="font-bold mb-4">Book a Consultation</h4>
-            <div className="space-y-4">
-              <button className="w-full bg-white text-clinic-900 font-bold py-4 rounded-xl hover:bg-clinic-50 transition-colors">
-                Quick Reservation
-              </button>
-              <button className="w-full bg-transparent border border-white/30 text-white font-bold py-4 rounded-xl hover:bg-white/10 transition-colors">
-                Call Clinic
-              </button>
-            </div>
-            <p className="mt-6 text-[10px] text-clinic-400 text-center">
-              Available: Mon-Fri 09:00 - 18:00
-            </p>
+            
+            {/* Background design elements */}
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 bg-clinic-500/20 rounded-full blur-2xl" />
           </div>
         </div>
       </div>

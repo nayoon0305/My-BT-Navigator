@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_KR } from "next/font/google";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const noto = Noto_Sans_KR({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-noto" });
 
 export const viewport = {
   themeColor: "#ffffff",
@@ -12,16 +13,15 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: "My BT Navigator | Breast and Thyroid Symptom Navigator",
-  description: "A professional navigation tool for breast and thyroid symptoms. Trusted information and quick symptom checking.",
-  keywords: ["breast pain", "breast lump", "thyroid nodule", "symptom checker"],
+  title: "My BT Navigator | 유방 & 갑상선 증상 네비게이터",
+  description: "유방 및 갑상선 증상에 대한 전문적이고 신뢰할 수 있는 정보를 제공합니다.",
+  keywords: ["유방통증", "유방멍울", "갑상선결절", "증상체크"],
   manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
-...
-
-    <html lang="en">
+  return (
+    <html lang="ko">
       <head>
         {/* Google Analytics Placeholder */}
         <script
@@ -53,17 +53,17 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body className={`${inter.variable} font-sans antialiased bg-gray-50 text-gray-900`}>
+      <body className={`${inter.variable} ${noto.variable} font-sans antialiased bg-gray-50 text-gray-900`}>
         <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
           <div className="max-w-screen-xl mx-auto px-4 h-16 flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold text-clinic-700">BT Navigator</Link>
+            <Link href="/" className="text-xl font-bold text-clinic-700 tracking-tight">BT Navigator</Link>
             <nav className="hidden md:flex space-x-8">
-              <Link href="/" className="text-sm font-medium hover:text-clinic-600 transition-colors">Home</Link>
-              <Link href="/#symptoms" className="text-sm font-medium hover:text-clinic-600 transition-colors">Symptoms</Link>
-              <Link href="/#about" className="text-sm font-medium hover:text-clinic-600 transition-colors">About</Link>
+              <Link href="/" className="text-sm font-medium hover:text-clinic-600 transition-colors">홈</Link>
+              <Link href="/#symptoms" className="text-sm font-medium hover:text-clinic-600 transition-colors">증상 가이드</Link>
+              <Link href="/#about" className="text-sm font-medium hover:text-clinic-600 transition-colors">병원 안내</Link>
             </nav>
             <button className="bg-clinic-600 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-clinic-700 transition-colors">
-              Reservation
+              예약하기
             </button>
           </div>
         </header>
